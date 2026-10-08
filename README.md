@@ -58,6 +58,12 @@ original size, full legibility.
 
 One ZIP (~31 MB) from the website. Unzip into any folder and run
 `MrcCompressor.exe` — no installer, nothing is written deep into the system.
+Or via the Windows Package Manager:
+
+```
+winget install DanielKreutz.MRCPDFKompressor
+```
+
 `MrcCompressor.exe` is digitally signed (Certum certificate issued to Daniel
 Kreutz); the SHA256 checksum and independent VirusTotal reports are published
 on the download page.
