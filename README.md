@@ -1,6 +1,6 @@
 # MRC PDF Kompressor — scanned documents into tiny, sharp PDFs (Windows)
 
-A free Windows program that turns scanned pages (TIFF, JPEG, PNG) into extremely
+A free Windows program that turns scanned pages (TIFF, JPEG, PNG or PDF) into extremely
 compact PDF files using **Mixed Raster Content (MRC)** — typically **90–95 % smaller**
 than the original scan, with text that stays crisp. Pattern-safe by default (no
 JBIG2 symbol substitution), so the method is suitable for replacement scanning
@@ -33,11 +33,15 @@ the same legibility — and is free for private individuals and small businesses
 - **Smart inpainting & background bleaching**: the background behind the text
   is reconstructed with the real paper colour, grey haze and show-through are
   removed — no halos, smaller files
-- **PDF/A-1b** output for long-term archiving (ISO 19005-1), validated with veraPDF
+- **PDF/A-1b to PDF/A-4** output for long-term archiving (ISO 19005; levels 1b, 2b, 2u, 3b,
+  3u, 4), each validated with veraPDF – from PDF/A-2 on (default: 2b) the background stays
+  JPEG 2000, the file as small as without PDF/A
 - **Searchable via OCR (optional)**: built-in text recognition places an
   invisible, word-accurate text layer over the page — full-text search,
   selecting and copying; runs locally without a cloud service (PaddleOCR
   models on ONNX Runtime), also together with PDF/A, around 6 KB per page
+- **PDF as input**: scanned PDFs (copiers, scanners) and digital PDFs become small,
+  searchable PDF/A; existing text, links and bookmarks are kept
 - **Multi-page TIFF**, folders and wildcards as input, parallel page
   processing on multi-core CPUs
 - **Split-view GUI** with live preview (original vs. result), synchronised
@@ -87,7 +91,8 @@ missing runtimes on request.
 ## Command line
 
 ```
-MrcCompressor.exe "Scan01.tif" "Archive01.pdf" --mode text --pdfa --ocr
+MrcCompressor.exe "Scan01.tif" "Archive01.pdf" --mode text --pdfa 2u --ocr
+MrcCompressor.exe Copier.pdf --pdfa --ocr
 MrcCompressor.exe "Scan02.tif" "Archive02.pdf" --profile "My archive profile"
 MrcCompressor.exe C:\Scans\*.tif Batch.pdf --mode auto
 MrcCompressor.exe --help
@@ -96,7 +101,7 @@ MrcCompressor.exe --help
 | Option | Meaning |
 |---|---|
 | `--mode auto\|text\|image\|text2\|image2` | processing strategy (auto-detects text vs. graphic pages) |
-| `--pdfa` | PDF/A-1b output |
+| `--pdfa [level]` | PDF/A output, level 2b (default), 1b, 2u, 3b, 3u or 4 |
 | `--ocr` | invisible text layer (searchable PDF) via text recognition |
 | `--profile "Name"` / `--profiles` | run a custom profile / list all profiles |
 | `--threshold 0-255` | text detection sensitivity |

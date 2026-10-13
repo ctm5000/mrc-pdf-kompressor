@@ -1,6 +1,6 @@
 # MRC PDF Kompressor — gescannte Dokumente in winzige, scharfe PDFs (Windows)
 
-Ein kostenloses Windows-Programm, das gescannte Seiten (TIFF, JPEG, PNG) mit
+Ein kostenloses Windows-Programm, das gescannte Seiten (TIFF, JPEG, PNG oder PDF) mit
 **Mixed Raster Content (MRC)** in extrem kompakte PDF-Dateien verwandelt —
 typisch **90–95 % kleiner** als der Original-Scan, bei gestochen scharfem Text.
 Standardmäßig pattern-safe (keine JBIG2-Zeichenersetzung), damit geeignet für
@@ -34,11 +34,15 @@ Privatpersonen und kleine Unternehmen kostenlos.
 - **Smart Inpainting & Background Bleaching**: der Hintergrund hinter dem Text
   wird mit der echten Papierfarbe rekonstruiert, Grauschleier und
   Durchscheinen entfernt — keine Halos, kleinere Dateien
-- **PDF/A-1b** für die Langzeitarchivierung (ISO 19005-1), geprüft mit veraPDF
+- **PDF/A-1b bis PDF/A-4** für die Langzeitarchivierung (ISO 19005; Stufen 1b, 2b, 2u, 3b,
+  3u, 4), jede Stufe geprüft mit veraPDF – ab PDF/A-2 (Standard: 2b) bleibt der Hintergrund
+  JPEG 2000, die Datei so klein wie ohne PDF/A
 - **Durchsuchbar per OCR (optional)**: die integrierte Texterkennung legt eine
   unsichtbare, wortgenaue Textebene über die Seite — Volltextsuche, Markieren
   und Kopieren; läuft lokal ohne Cloud (PaddleOCR-Modelle auf ONNX Runtime),
   auch zusammen mit PDF/A, rund 6 KB je Seite
+- **PDF als Eingabe**: Scan-PDFs (Kopierer, Scanner) und digitale PDFs werden zu
+  kleinen, durchsuchbaren PDF/A; vorhandener Text, Links und Lesezeichen bleiben erhalten
 - **Mehrseitige TIFFs**, Ordner und Wildcards als Eingabe, parallele
   Seitenverarbeitung auf Mehrkern-CPUs
 - **Split-View-Oberfläche** mit Echtzeit-Vorschau (Original vs. Ergebnis),
@@ -87,7 +91,8 @@ fehlende Laufzeiten auf Wunsch nach.
 ## Kommandozeile
 
 ```
-MrcCompressor.exe "Scan01.tif" "Archiv01.pdf" --mode text --pdfa --ocr
+MrcCompressor.exe "Scan01.tif" "Archiv01.pdf" --mode text --pdfa 2u --ocr
+MrcCompressor.exe Kopierer.pdf --pdfa --ocr
 MrcCompressor.exe "Scan02.tif" "Archiv02.pdf" --profile "Mein Archivprofil"
 MrcCompressor.exe C:\Scans\*.tif Stapel.pdf --mode auto
 MrcCompressor.exe --help
@@ -96,7 +101,7 @@ MrcCompressor.exe --help
 | Option | Bedeutung |
 |---|---|
 | `--mode auto\|text\|image\|text2\|image2` | Verarbeitungsstrategie (Automatik erkennt Text- vs. Grafikseiten) |
-| `--pdfa` | PDF/A-1b-Ausgabe |
+| `--pdfa [stufe]` | PDF/A-Ausgabe, Stufe 2b (Standard), 1b, 2u, 3b, 3u oder 4 |
 | `--ocr` | unsichtbare Textebene (durchsuchbare PDF) per Texterkennung |
 | `--profile "Name"` / `--profiles` | eigenes Profil aufrufen / alle Profile auflisten |
 | `--threshold 0-255` | Empfindlichkeit der Texterkennung |
