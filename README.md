@@ -30,6 +30,10 @@ the same legibility — and is free for private individuals and small businesses
 - **Colour text layers**: coloured headings, stamps, logos and highlighter
   marks are detected automatically and kept as separate, sharp 300-DPI
   layers in their original colour (up to 4 colour clusters per page)
+- **Coloured paper and photos on text pages**: letters on coloured or slightly
+  tinted paper stay small text pages, the paper becomes an even area in its own
+  colour; photos and illustrations on text pages go into the PDF as a separate
+  image in graphics quality, while the surrounding text stays sharp
 - **Smart inpainting & background bleaching**: the background behind the text
   is reconstructed with the real paper colour, grey haze and show-through are
   removed — no halos, smaller files
@@ -41,7 +45,8 @@ the same legibility — and is free for private individuals and small businesses
   selecting and copying; runs locally without a cloud service (PaddleOCR
   models on ONNX Runtime), also together with PDF/A, around 6 KB per page
 - **PDF as input**: scanned PDFs (copiers, scanners) and digital PDFs become small,
-  searchable PDF/A; existing text, links and bookmarks are kept
+  searchable PDF/A; existing text, links and bookmarks are kept, file attachments
+  (e.g. of e-invoices) are pointed out – they are lost in the conversion
 - **Multi-page TIFF**, folders and wildcards as input, parallel page
   processing on multi-core CPUs
 - **Split-view GUI** with live preview (original vs. result), synchronised
@@ -60,7 +65,9 @@ the same legibility — and is free for private individuals and small businesses
    colour and embedded as separate stencil layers
 3. **Background** — paper texture and photos are inpainted, smoothed,
    downscaled and encoded as JPEG 2000 or JPEG
-4. **Text layer (optional)** — text recognition places the recognised text
+4. **Image regions** — photos and illustrations on text pages are embedded as a
+   separate image in graphics quality, no text mask is created there
+5. **Text layer (optional)** — text recognition places the recognised text
    invisibly over the image so the PDF becomes searchable
 
 The PDF stacks these layers exactly on top of each other: a fraction of the
@@ -108,6 +115,7 @@ MrcCompressor.exe --help
 | `--scale 1-10` | background downscale factor (strongest size lever) |
 | `--quality 0-100` | background JPEG 2000 / JPEG quality |
 | `--jbig2symbols` | JBIG2 symbol matching (max. compression, **not** pattern-safe) |
+| `--noimageregions` | do not protect photos on text pages as a separate image |
 | `--dpi N` | force resolution for images without DPI metadata |
 
 Every mode starts with its profile from `mrc_profiles.xml`; explicit parameters

@@ -31,6 +31,10 @@ Privatpersonen und kleine Unternehmen kostenlos.
 - **Farbtext-Ebenen**: farbige Überschriften, Stempel, Logos und Textmarker
   werden automatisch erkannt und als eigene scharfe 300-DPI-Ebenen in
   Originalfarbe erhalten (bis zu 4 Farbcluster je Seite)
+- **Farbiges Papier und Fotos auf Textseiten**: Briefe auf farbigem oder leicht
+  getöntem Papier bleiben kleine Textseiten, das Papier wird eine gleichmäßige
+  Fläche in seiner Farbe; Fotos und Illustrationen auf Textseiten kommen als
+  eigenes Bild in Grafik-Qualität in die PDF, die Schrift drumherum bleibt scharf
 - **Smart Inpainting & Background Bleaching**: der Hintergrund hinter dem Text
   wird mit der echten Papierfarbe rekonstruiert, Grauschleier und
   Durchscheinen entfernt — keine Halos, kleinere Dateien
@@ -42,7 +46,8 @@ Privatpersonen und kleine Unternehmen kostenlos.
   und Kopieren; läuft lokal ohne Cloud (PaddleOCR-Modelle auf ONNX Runtime),
   auch zusammen mit PDF/A, rund 6 KB je Seite
 - **PDF als Eingabe**: Scan-PDFs (Kopierer, Scanner) und digitale PDFs werden zu
-  kleinen, durchsuchbaren PDF/A; vorhandener Text, Links und Lesezeichen bleiben erhalten
+  kleinen, durchsuchbaren PDF/A; vorhandener Text, Links und Lesezeichen bleiben erhalten,
+  auf Dateianhänge (z. B. von E-Rechnungen) weist das Programm hin – sie gehen verloren
 - **Mehrseitige TIFFs**, Ordner und Wildcards als Eingabe, parallele
   Seitenverarbeitung auf Mehrkern-CPUs
 - **Split-View-Oberfläche** mit Echtzeit-Vorschau (Original vs. Ergebnis),
@@ -62,7 +67,9 @@ Privatpersonen und kleine Unternehmen kostenlos.
    gruppiert und als eigene Stencil-Ebenen eingebettet
 3. **Hintergrund** — Papierstruktur und Fotos werden inpainted, geglättet,
    verkleinert und als JPEG 2000 oder JPEG kodiert
-4. **Textebene (optional)** — die Texterkennung legt den gelesenen Text
+4. **Bildbereiche** — Fotos und Illustrationen auf Textseiten werden als eigenes
+   Bild in Grafik-Qualität eingebettet, dort entsteht keine Textmaske
+5. **Textebene (optional)** — die Texterkennung legt den gelesenen Text
    unsichtbar über das Bild, damit die PDF durchsuchbar wird
 
 Im PDF liegen diese Ebenen deckungsgleich übereinander: ein Bruchteil der
@@ -108,6 +115,7 @@ MrcCompressor.exe --help
 | `--scale 1-10` | Verkleinerungsfaktor des Hintergrunds (stärkster Größenhebel) |
 | `--quality 0-100` | Qualität des Hintergrunds (JPEG 2000 / JPEG) |
 | `--jbig2symbols` | JBIG2-Symbol-Matching (max. Kompression, **nicht** pattern-safe) |
+| `--noimageregions` | Fotos auf Textseiten nicht als eigenes Bild schützen |
 | `--dpi N` | Auflösung für Bilder ohne DPI-Angabe erzwingen |
 
 Jeder Modus startet mit seinem Profil aus `mrc_profiles.xml`; angegebene
