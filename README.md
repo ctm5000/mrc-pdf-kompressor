@@ -116,7 +116,7 @@ MrcCompressor.exe --help
 | `--scale 1-10` | background downscale factor (strongest size lever) |
 | `--quality 0-100` | background JPEG 2000 / JPEG quality |
 | `--jbig2symbols` | JBIG2 symbol matching (max. compression, **not** pattern-safe) |
-| `--nojbig2lossless` | encode the text mask generically only, without character patterns (as up to 4.4.0) |
+| `--nojbig2lossless` | encode the text mask generically only, without character patterns |
 | `--noimageregions` | do not protect photos on text pages as a separate image |
 | `--dpi N` | force resolution for images without DPI metadata |
 

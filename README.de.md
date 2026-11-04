@@ -115,7 +115,7 @@ MrcCompressor.exe --help
 | `--scale 1-10` | Verkleinerungsfaktor des Hintergrunds (stärkster Größenhebel) |
 | `--quality 0-100` | Qualität des Hintergrunds (JPEG 2000 / JPEG) |
 | `--jbig2symbols` | JBIG2-Symbol-Matching (max. Kompression, **nicht** pattern-safe) |
-| `--nojbig2lossless` | Textmaske nur generisch kodieren, ohne Zeichenmuster (wie bis 4.4.0) |
+| `--nojbig2lossless` | Textmaske nur generisch kodieren, ohne Zeichenmuster |
 | `--noimageregions` | Fotos auf Textseiten nicht als eigenes Bild schützen |
 | `--dpi N` | Auflösung für Bilder ohne DPI-Angabe erzwingen |
 
