@@ -24,10 +24,11 @@ Privatpersonen und kleine Unternehmen kostenlos.
 
 - **Extreme Kompression**: aus einem 5-MB-Scan werden im Text-Modus deutlich
   unter 100 KB
-- **Pattern-safe / TR-RESISCAN**: generische JBIG2-Kodierung ohne
-  Zeichenersetzung — kein Zeichen wird durch ein „ähnliches" ersetzt (die
-  bekannte JBIG2-Falle); optionaler Symbol-Modus für maximale Kompression,
-  wenn Pattern-Sicherheit nicht gefordert ist
+- **Pattern-safe / TR-RESISCAN**: JBIG2-Kodierung ohne Zeichenersetzung,
+  verlustfrei mit Zeichenmustern — gleiche Zeichen werden einmal gespeichert und
+  an jeder Stelle pixelgenau korrigiert, kein Zeichen wird durch ein „ähnliches"
+  ersetzt (die bekannte JBIG2-Falle); optionaler Symbol-Modus für maximale
+  Kompression, wenn Pattern-Sicherheit nicht gefordert ist
 - **Farbtext-Ebenen**: farbige Überschriften, Stempel, Logos und Textmarker
   werden automatisch erkannt und als eigene scharfe 300-DPI-Ebenen in
   Originalfarbe erhalten (bis zu 4 Farbcluster je Seite)
@@ -49,7 +50,7 @@ Privatpersonen und kleine Unternehmen kostenlos.
   kleinen, durchsuchbaren PDF/A; vorhandener Text, Links und Lesezeichen bleiben erhalten,
   auf Dateianhänge (z. B. von E-Rechnungen) weist das Programm hin – sie gehen verloren
 - **Mehrseitige TIFFs**, Ordner und Wildcards als Eingabe, parallele
-  Seitenverarbeitung auf Mehrkern-CPUs
+  Seitenverarbeitung auf Mehrkern-CPUs (bis zu 8 Seiten gleichzeitig)
 - **Split-View-Oberfläche** mit Echtzeit-Vorschau (Original vs. Ergebnis),
   synchronem Zoom, Ebenen-Ansicht, Profilen („Text", „Grafik", …) und einer
   generierten Kommandozeile zum Übernehmen in Skripte
@@ -61,8 +62,9 @@ Privatpersonen und kleine Unternehmen kostenlos.
 ## Wie es funktioniert
 
 1. **Text-Maske** — schwarzer Text wird in voller Auflösung (300 DPI)
-   extrahiert und als JBIG2 kodiert (generische Region, pattern-safe;
-   CCITT G4 als Rückfallebene)
+   extrahiert und als JBIG2 kodiert — verlustfrei mit Zeichenmustern und einem
+   gemeinsamen Wörterbuch je Dokument, jede Seite wird zur Kontrolle
+   zurückgelesen (pattern-safe; CCITT G4 als Rückfallebene)
 2. **Farbtext-Ebenen** — farbige Schrift, Stempel und Logos werden nach Farbe
    gruppiert und als eigene Stencil-Ebenen eingebettet
 3. **Hintergrund** — Papierstruktur und Fotos werden inpainted, geglättet,
@@ -77,8 +79,8 @@ Originalgröße bei voller Lesbarkeit.
 
 ## Download & Installation
 
-Über die Webseite als signiertes Setup (ca. 41 MB, Installation auch ohne
-Administratorrechte) oder als ZIP (ca. 51 MB, davon rund 20 MB für die
+Über die Webseite als signiertes Setup (ca. 39 MB, Installation auch ohne
+Administratorrechte) oder als ZIP (ca. 48 MB, davon rund 18 MB für die
 Texterkennung im Ordner `ocr`). Das ZIP in einen beliebigen Ordner entpacken
 und `MrcCompressor.exe` starten — nichts wird tief ins System geschrieben. Oder über den Windows-Paketmanager:
 
@@ -91,9 +93,7 @@ auf der Download-Seite.
 
 Voraussetzungen: Windows 10/11 64-Bit, .NET Framework 4.8,
 [Visual C++ Redistributable x64](https://aka.ms/vc14/vc_redist.x64.exe) für die
-Texterkennung; nur für den optionalen JBIG2-Symbol-Modus zusätzlich
-[Visual C++ 2013 x86](https://aka.ms/highdpimfc2013x86enu). Das Setup installiert
-fehlende Laufzeiten auf Wunsch nach.
+Texterkennung. Das Setup installiert die Laufzeit auf Wunsch nach.
 
 ## Kommandozeile
 
@@ -115,6 +115,7 @@ MrcCompressor.exe --help
 | `--scale 1-10` | Verkleinerungsfaktor des Hintergrunds (stärkster Größenhebel) |
 | `--quality 0-100` | Qualität des Hintergrunds (JPEG 2000 / JPEG) |
 | `--jbig2symbols` | JBIG2-Symbol-Matching (max. Kompression, **nicht** pattern-safe) |
+| `--nojbig2lossless` | Textmaske nur generisch kodieren, ohne Zeichenmuster (wie bis 4.4.0) |
 | `--noimageregions` | Fotos auf Textseiten nicht als eigenes Bild schützen |
 | `--dpi N` | Auflösung für Bilder ohne DPI-Angabe erzwingen |
 
@@ -130,6 +131,6 @@ Organisationen mit weniger als 100 Personen **und** unter 1 Mio. USD
 Jahresumsatz — größere Unternehmen benötigen eine kostenpflichtige Lizenz über
 [kreutzweb.de](https://kreutzweb.de). Aufgebaut auf hervorragender
 Open-Source-Software: ImageMagick (Magick.NET), SkiaSharp, iTextSharp LGPL,
-jbig2enc + Leptonica, potrace (GPL, Quellcode liegt bei), PDFium, Bouncy
-Castle, ONNX Runtime und PaddleOCR-Modelle — siehe THIRD-PARTY-NOTICES.txt
+potrace (GPL, Quellcode liegt bei), PDFium, Bouncy Castle, ONNX Runtime und
+PaddleOCR-Modelle — siehe THIRD-PARTY-NOTICES.txt
 im Paket.

@@ -23,10 +23,11 @@ the same legibility — and is free for private individuals and small businesses
 ## Features
 
 - **Extreme compression**: a 5 MB scan becomes well under 100 KB in text mode
-- **Pattern-safe / TR-RESISCAN**: generic JBIG2 encoding without character
-  substitution — no glyph is ever replaced by a "similar" one (the classic
-  JBIG2 pitfall); optional symbol mode for maximum compression when
-  pattern safety is not required
+- **Pattern-safe / TR-RESISCAN**: JBIG2 encoding without character
+  substitution, lossless with character patterns — identical glyphs are stored
+  once and corrected pixel by pixel wherever they occur, no glyph is ever
+  replaced by a "similar" one (the classic JBIG2 pitfall); optional symbol mode
+  for maximum compression when pattern safety is not required
 - **Colour text layers**: coloured headings, stamps, logos and highlighter
   marks are detected automatically and kept as separate, sharp 300-DPI
   layers in their original colour (up to 4 colour clusters per page)
@@ -48,7 +49,7 @@ the same legibility — and is free for private individuals and small businesses
   searchable PDF/A; existing text, links and bookmarks are kept, file attachments
   (e.g. of e-invoices) are pointed out – they are lost in the conversion
 - **Multi-page TIFF**, folders and wildcards as input, parallel page
-  processing on multi-core CPUs
+  processing on multi-core CPUs (up to 8 pages at a time)
 - **Split-view GUI** with live preview (original vs. result), synchronised
   zoom, layer view, profiles ("Text", "Graphic", …) and a generated command
   line you can paste into your scripts
@@ -60,7 +61,9 @@ the same legibility — and is free for private individuals and small businesses
 ## How it works
 
 1. **Text mask** — black text is extracted at full resolution (300 DPI) and
-   encoded as JBIG2 (generic region, pattern-safe; CCITT G4 as fallback)
+   encoded as JBIG2 — losslessly with character patterns and one shared
+   dictionary per document, every page read back as a check (pattern-safe;
+   CCITT G4 as fallback)
 2. **Colour text layers** — coloured text, stamps and logos are clustered by
    colour and embedded as separate stencil layers
 3. **Background** — paper texture and photos are inpainted, smoothed,
@@ -75,8 +78,8 @@ original size, full legibility.
 
 ## Download & installation
 
-From the website as a signed setup (~41 MB, installs without administrator
-rights if you like) or as a ZIP (~51 MB, about 20 MB of which for text
+From the website as a signed setup (~39 MB, installs without administrator
+rights if you like) or as a ZIP (~48 MB, about 18 MB of which for text
 recognition in the `ocr` folder). Unzip the ZIP into any folder and run
 `MrcCompressor.exe` — nothing is written deep into the system.
 Or via the Windows Package Manager:
@@ -91,9 +94,7 @@ on the download page.
 
 Requirements: Windows 10/11 64-bit, .NET Framework 4.8,
 [Visual C++ Redistributable x64](https://aka.ms/vc14/vc_redist.x64.exe) for text
-recognition; only for the optional JBIG2 symbol mode additionally
-[Visual C++ 2013 x86](https://aka.ms/highdpimfc2013x86enu). The setup installs
-missing runtimes on request.
+recognition. The setup installs the runtime on request.
 
 ## Command line
 
@@ -115,6 +116,7 @@ MrcCompressor.exe --help
 | `--scale 1-10` | background downscale factor (strongest size lever) |
 | `--quality 0-100` | background JPEG 2000 / JPEG quality |
 | `--jbig2symbols` | JBIG2 symbol matching (max. compression, **not** pattern-safe) |
+| `--nojbig2lossless` | encode the text mask generically only, without character patterns (as up to 4.4.0) |
 | `--noimageregions` | do not protect photos on text pages as a separate image |
 | `--dpi N` | force resolution for images without DPI metadata |
 
@@ -128,9 +130,9 @@ Licensed under the **PolyForm Small Business License 1.0.0**: free for
 private individuals and for organisations with fewer than 100 people **and**
 under USD 1M annual revenue — larger companies need a paid license via
 [kreutzweb.de](https://kreutzweb.de). Built on excellent open-source software:
-ImageMagick (Magick.NET), SkiaSharp, iTextSharp LGPL, jbig2enc + Leptonica,
-potrace (GPL, sources included), PDFium, Bouncy Castle, ONNX Runtime and
-PaddleOCR models — see THIRD-PARTY-NOTICES.txt in the package.
+ImageMagick (Magick.NET), SkiaSharp, iTextSharp LGPL, potrace (GPL, sources
+included), PDFium, Bouncy Castle, ONNX Runtime and PaddleOCR models — see
+THIRD-PARTY-NOTICES.txt in the package.
 
 ---
 
