@@ -17,8 +17,9 @@ A colour A4 page scanned at 300 DPI is 25 MB as TIFF and still several MB as
 JPEG. Archives, document management systems and mailboxes fill up fast.
 Commercial MRC engines solve this, but are licensed per seat or per page
 volume. This tool delivers comparable results — in an internal comparison of
-23 sample pages, half the total size of a leading commercial MRC solution at
-the same legibility — and is free for private individuals and small businesses.
+23 sample pages, around 60 % smaller in total than a leading commercial MRC
+solution and smaller in all five document groups, at the same legibility — and
+is free for private individuals and small businesses.
 
 ## Features
 
@@ -35,6 +36,10 @@ the same legibility — and is free for private individuals and small businesses
   tinted paper stay small text pages, the paper becomes an even area in its own
   colour; photos and illustrations on text pages go into the PDF as a separate
   image in graphics quality, while the surrounding text stays sharp
+- **Forms and screenshots**: grey-shaded form fields are kept (straight fields as
+  vector shapes with crisp edges), forms with coloured frames stay small text pages,
+  light checkboxes stay complete; screenshots and application windows on text pages
+  are protected as images, their small text stays legible
 - **Smart inpainting & background bleaching**: the background behind the text
   is reconstructed with the real paper colour, grey haze and show-through are
   removed — no halos, smaller files
@@ -67,8 +72,9 @@ the same legibility — and is free for private individuals and small businesses
 2. **Colour text layers** — coloured text, stamps and logos are clustered by
    colour and embedded as separate stencil layers
 3. **Background** — paper texture and photos are inpainted, smoothed,
-   downscaled and encoded as JPEG 2000 or JPEG
-4. **Image regions** — photos and illustrations on text pages are embedded as a
+   downscaled and encoded as JPEG 2000 or JPEG; evenly grey form fields are drawn
+   on top as crisp vector shapes
+4. **Image regions** — photos, illustrations and screenshots on text pages are embedded as a
    separate image in graphics quality, no text mask is created there
 5. **Text layer (optional)** — text recognition places the recognised text
    invisibly over the image so the PDF becomes searchable

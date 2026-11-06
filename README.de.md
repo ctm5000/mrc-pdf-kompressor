@@ -16,8 +16,9 @@ Eine farbige A4-Seite mit 300 DPI ist als TIFF 25 MB groß und als JPEG immer
 noch mehrere MB. Archive, DMS und Postfächer laufen damit schnell voll.
 Kommerzielle MRC-Engines lösen das, werden aber pro Arbeitsplatz oder
 Seitenvolumen lizenziert. Dieses Werkzeug liefert vergleichbare Ergebnisse —
-im internen Vergleich mit 23 Musterseiten in Summe nur halb so groß wie eine
-führende kommerzielle MRC-Lösung bei gleicher Lesbarkeit — und ist für
+im internen Vergleich mit 23 Musterseiten in Summe rund 60 % kleiner als eine
+führende kommerzielle MRC-Lösung und in allen fünf Dokumentgruppen kleiner, bei
+gleicher Lesbarkeit — und ist für
 Privatpersonen und kleine Unternehmen kostenlos.
 
 ## Funktionen
@@ -36,6 +37,10 @@ Privatpersonen und kleine Unternehmen kostenlos.
   getöntem Papier bleiben kleine Textseiten, das Papier wird eine gleichmäßige
   Fläche in seiner Farbe; Fotos und Illustrationen auf Textseiten kommen als
   eigenes Bild in Grafik-Qualität in die PDF, die Schrift drumherum bleibt scharf
+- **Formulare und Screenshots**: grau hinterlegte Formularfelder bleiben erhalten (gerade
+  Felder als Vektorfläche mit scharfer Kante), Formulare mit farbigen Rahmen bleiben kleine
+  Textseiten, helle Ankreuzkästchen bleiben vollständig; Screenshots und Programmfenster auf
+  Textseiten werden als Bild geschützt, ihre kleine Schrift bleibt lesbar
 - **Smart Inpainting & Background Bleaching**: der Hintergrund hinter dem Text
   wird mit der echten Papierfarbe rekonstruiert, Grauschleier und
   Durchscheinen entfernt — keine Halos, kleinere Dateien
@@ -68,8 +73,9 @@ Privatpersonen und kleine Unternehmen kostenlos.
 2. **Farbtext-Ebenen** — farbige Schrift, Stempel und Logos werden nach Farbe
    gruppiert und als eigene Stencil-Ebenen eingebettet
 3. **Hintergrund** — Papierstruktur und Fotos werden inpainted, geglättet,
-   verkleinert und als JPEG 2000 oder JPEG kodiert
-4. **Bildbereiche** — Fotos und Illustrationen auf Textseiten werden als eigenes
+   verkleinert und als JPEG 2000 oder JPEG kodiert; gleichmäßig graue
+   Formularfelder kommen als scharfe Vektorflächen darüber
+4. **Bildbereiche** — Fotos, Illustrationen und Screenshots auf Textseiten werden als eigenes
    Bild in Grafik-Qualität eingebettet, dort entsteht keine Textmaske
 5. **Textebene (optional)** — die Texterkennung legt den gelesenen Text
    unsichtbar über das Bild, damit die PDF durchsuchbar wird
