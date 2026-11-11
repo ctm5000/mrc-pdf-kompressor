@@ -3,12 +3,13 @@
 Ein kostenloses Windows-Programm, das gescannte Seiten (TIFF, JPEG, PNG oder PDF) mit
 **Mixed Raster Content (MRC)** in extrem kompakte PDF-Dateien verwandelt —
 typisch **90–95 % kleiner** als der Original-Scan, bei gestochen scharfem Text.
-Standardmäßig pattern-safe (keine JBIG2-Zeichenersetzung), damit geeignet für
-das ersetzende Scannen nach **BSI TR-RESISCAN**.
+Standardmäßig pattern-safe: Die Textmaske wird Pixel für Pixel kodiert, ohne
+Zeichenmuster und ohne Zeichenvergleich — kein „Symbol Coding“ im Sinn der
+**BSI TR-RESISCAN** (TR-03138, Anforderung A.SC.12).
 
 **Webseite & Download:** https://kreutzweb.de/tool-mrc-pdf-kompressor.html
 
-![MRC PDF Kompressor — Split-View: links der Original-Scan, rechts die Vorschau des komprimierten PDFs](screenshot.png)
+![MRC PDF Kompressor — links der Original-Scan, rechts die Vorschau des komprimierten PDFs](screenshot.png)
 
 ## Warum
 
@@ -16,20 +17,31 @@ Eine farbige A4-Seite mit 300 DPI ist als TIFF 25 MB groß und als JPEG immer
 noch mehrere MB. Archive, DMS und Postfächer laufen damit schnell voll.
 Kommerzielle MRC-Engines lösen das, werden aber pro Arbeitsplatz oder
 Seitenvolumen lizenziert. Dieses Werkzeug liefert vergleichbare Ergebnisse —
-im internen Vergleich mit 23 Musterseiten in Summe rund 60 % kleiner als eine
-führende kommerzielle MRC-Lösung und in allen fünf Dokumentgruppen kleiner, bei
-gleicher Lesbarkeit — und ist für
-Privatpersonen und kleine Unternehmen kostenlos.
+im internen Vergleich mit 23 Musterseiten im Standard (streng pattern-safe) in
+Summe rund 60 % kleiner als eine führende kommerzielle MRC-Lösung, die ihre
+Schrift per Symbol-Matching kodiert, bei reinen Textseiten etwa gleichauf; mit
+`--maxcompress` in Summe rund zwei Drittel kleiner und in allen fünf
+Dokumentgruppen kleiner — und ist für Privatpersonen und kleine Unternehmen
+kostenlos.
 
 ## Funktionen
 
 - **Extreme Kompression**: aus einem 5-MB-Scan werden im Text-Modus deutlich
   unter 100 KB
-- **Pattern-safe / TR-RESISCAN**: JBIG2-Kodierung ohne Zeichenersetzung,
-  verlustfrei mit Zeichenmustern — gleiche Zeichen werden einmal gespeichert und
-  an jeder Stelle pixelgenau korrigiert, kein Zeichen wird durch ein „ähnliches"
-  ersetzt (die bekannte JBIG2-Falle); optionaler Symbol-Modus für maximale
-  Kompression, wenn Pattern-Sicherheit nicht gefordert ist
+- **Pattern-safe / TR-RESISCAN**: Standard ist die generische JBIG2-Kodierung —
+  jedes Pixel der Textmaske wird so gespeichert, wie es ist, ohne Wörterbuch und
+  ohne Zeichenvergleich (kein „Symbol Coding“, TR-03138 A.SC.12); `--patternsafe`
+  erzwingt das auch gegen ein eigenes Profil
+- **Pattern-safe ohne JBIG2** (`--ccitt`): dieselbe Sicherheit mit CCITT G4
+  (Fax-Kodierung) für Stellen, die JBIG2 ganz ablehnen; Textseiten werden
+  20–45 % größer
+- **Maximale Kompression auf Wunsch** (`--maxcompress`): JBIG2-Symbol-Matching
+  und Kantenangleichung gleicher Zeichen — reine Textseiten bis rund 60 %
+  kleiner. Ähnliche Zeichen können dabei ersetzt werden (die bekannte
+  JBIG2-Falle), also nicht für das ersetzende Scannen. Mit
+  `--maxcompress --nojbig2symbols` wird kein Zeichen ersetzt: gleiche Zeichen
+  werden einmal als Muster gespeichert und an jeder Stelle pixelgenau
+  korrigiert (Textseiten meist 15–45 % kleiner)
 - **Farbtext-Ebenen**: farbige Überschriften, Stempel, Logos und Textmarker
   werden automatisch erkannt und als eigene scharfe 300-DPI-Ebenen in
   Originalfarbe erhalten (bis zu 4 Farbcluster je Seite)
@@ -37,10 +49,16 @@ Privatpersonen und kleine Unternehmen kostenlos.
   getöntem Papier bleiben kleine Textseiten, das Papier wird eine gleichmäßige
   Fläche in seiner Farbe; Fotos und Illustrationen auf Textseiten kommen als
   eigenes Bild in Grafik-Qualität in die PDF, die Schrift drumherum bleibt scharf
+- **Schrift auf Bildseiten**: auch auf Seiten, die als Bild gespeichert werden
+  (Fotos, Pläne, Prospekte), kommt sicher erkannte schwarze Schrift scharf in
+  eine Textmaske — zeilen- und absatzweise; das Bild darunter wird kleiner
 - **Formulare und Screenshots**: grau hinterlegte Formularfelder bleiben erhalten (gerade
   Felder als Vektorfläche mit scharfer Kante), Formulare mit farbigen Rahmen bleiben kleine
   Textseiten, helle Ankreuzkästchen bleiben vollständig; Screenshots und Programmfenster auf
   Textseiten werden als Bild geschützt, ihre kleine Schrift bleibt lesbar
+- **Prägesiegel**: deutlich ausgeprägte Blindprägungen (etwa ein Kammersiegel auf einem
+  Zeugnis) werden erkannt und als zarte Schattierung erhalten, statt mit dem Papier
+  weiß gebleicht zu werden
 - **Smart Inpainting & Background Bleaching**: der Hintergrund hinter dem Text
   wird mit der echten Papierfarbe rekonstruiert, Grauschleier und
   Durchscheinen entfernt — keine Halos, kleinere Dateien
@@ -56,9 +74,10 @@ Privatpersonen und kleine Unternehmen kostenlos.
   auf Dateianhänge (z. B. von E-Rechnungen) weist das Programm hin – sie gehen verloren
 - **Mehrseitige TIFFs**, Ordner und Wildcards als Eingabe, parallele
   Seitenverarbeitung auf Mehrkern-CPUs (bis zu 8 Seiten gleichzeitig)
-- **Split-View-Oberfläche** mit Echtzeit-Vorschau (Original vs. Ergebnis),
-  synchronem Zoom, Ebenen-Ansicht, Profilen („Text", „Grafik", …) und einer
-  generierten Kommandozeile zum Übernehmen in Skripte
+- **Moderne Oberfläche** mit Echtzeit-Vorschau (Original und Ergebnis
+  nebeneinander), synchronem Zoom, Ebenen-Ansicht, Profilen („Text", „Grafik", …),
+  hell oder dunkel passend zu Windows; Dateien und Ordner lassen sich ins Fenster
+  ziehen, die passende Kommandozeile lässt sich mit einem Klick kopieren
 - **Eigene Profile**: beliebig viele benannte Profile in der Oberfläche
   speichern und per `--profile "Name"` in Skripten aufrufen
 - **Voll skriptbare CLI**: Exit-Codes 0/1/2, Fortschritt je Seite, `--help`,
@@ -67,13 +86,14 @@ Privatpersonen und kleine Unternehmen kostenlos.
 ## Wie es funktioniert
 
 1. **Text-Maske** — schwarzer Text wird in voller Auflösung (300 DPI)
-   extrahiert und als JBIG2 kodiert — verlustfrei mit Zeichenmustern und einem
-   gemeinsamen Wörterbuch je Dokument, jede Seite wird zur Kontrolle
-   zurückgelesen (pattern-safe; CCITT G4 als Rückfallebene)
+   extrahiert und als JBIG2 kodiert — generisch, also Pixel für Pixel ohne
+   Zeichenmuster (pattern-safe; CCITT G4 als Rückfallebene). Mit `--ccitt`
+   als CCITT G4 statt JBIG2, mit `--maxcompress` mit Zeichenmustern und einem
+   gemeinsamen Wörterbuch je Dokument, jede Seite wird zur Kontrolle zurückgelesen
 2. **Farbtext-Ebenen** — farbige Schrift, Stempel und Logos werden nach Farbe
    gruppiert und als eigene Stencil-Ebenen eingebettet
 3. **Hintergrund** — Papierstruktur und Fotos werden inpainted, geglättet,
-   verkleinert und als JPEG 2000 oder JPEG kodiert; gleichmäßig graue
+   verkleinert und als JPEG 2000 (OpenJPEG) oder JPEG kodiert; gleichmäßig graue
    Formularfelder kommen als scharfe Vektorflächen darüber
 4. **Bildbereiche** — Fotos, Illustrationen und Screenshots auf Textseiten werden als eigenes
    Bild in Grafik-Qualität eingebettet, dort entsteht keine Textmaske
@@ -99,7 +119,8 @@ auf der Download-Seite.
 
 Voraussetzungen: Windows 10/11 64-Bit, .NET Framework 4.8,
 [Visual C++ Redistributable x64](https://aka.ms/vc14/vc_redist.x64.exe) für die
-Texterkennung. Das Setup installiert die Laufzeit auf Wunsch nach.
+Texterkennung und die JPEG-2000-Kodierung mit OpenJPEG. Das Setup installiert die
+Laufzeit auf Wunsch nach.
 
 ## Kommandozeile
 
@@ -120,9 +141,12 @@ MrcCompressor.exe --help
 | `--threshold 0-255` | Empfindlichkeit der Texterkennung |
 | `--scale 1-10` | Verkleinerungsfaktor des Hintergrunds (stärkster Größenhebel) |
 | `--quality 0-100` | Qualität des Hintergrunds (JPEG 2000 / JPEG) |
-| `--jbig2symbols` | JBIG2-Symbol-Matching (max. Kompression, **nicht** pattern-safe) |
-| `--nojbig2lossless` | Textmaske nur generisch kodieren, ohne Zeichenmuster |
+| `--patternsafe` | Pattern-Safe erzwingen (ist der Standard; gilt auch gegen ein Profil): generisches JBIG2 ohne Symbol Coding |
+| `--ccitt` | Pattern-Safe ohne JBIG2: Textmaske als CCITT G4 (größer) |
+| `--maxcompress` | maximale Kompression: Symbol-Matching und Kantenangleichung, **nicht** pattern-safe (Zeichen können ersetzt werden) |
+| `--nojbig2symbols` | zusammen mit `--maxcompress`: ohne Zeichenersetzung (Zeichenmuster bitgleich) |
 | `--noimageregions` | Fotos auf Textseiten nicht als eigenes Bild schützen |
+| `--noimagetext` | Bildseiten ohne scharfe Textmaske (vollständig als Bild) |
 | `--dpi N` | Auflösung für Bilder ohne DPI-Angabe erzwingen |
 
 Jeder Modus startet mit seinem Profil aus `mrc_profiles.xml`; angegebene
@@ -137,6 +161,6 @@ Organisationen mit weniger als 100 Personen **und** unter 1 Mio. USD
 Jahresumsatz — größere Unternehmen benötigen eine kostenpflichtige Lizenz über
 [kreutzweb.de](https://kreutzweb.de). Aufgebaut auf hervorragender
 Open-Source-Software: ImageMagick (Magick.NET), SkiaSharp, iTextSharp LGPL,
-potrace (GPL, Quellcode liegt bei), PDFium, Bouncy Castle, ONNX Runtime und
+potrace (GPL, Quellcode liegt bei), PDFium, OpenJPEG, Bouncy Castle, ONNX Runtime und
 PaddleOCR-Modelle — siehe THIRD-PARTY-NOTICES.txt
 im Paket.
