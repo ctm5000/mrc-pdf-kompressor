@@ -52,6 +52,15 @@ kostenlos.
 - **Schrift auf Bildseiten**: auch auf Seiten, die als Bild gespeichert werden
   (Fotos, Pläne, Prospekte), kommt sicher erkannte schwarze Schrift scharf in
   eine Textmaske — zeilen- und absatzweise; das Bild darunter wird kleiner
+- **Jede Scan-Auflösung**: Scans über 300 DPI werden vor der Verarbeitung auf
+  300 DPI gerechnet und so klein wie ein 300-DPI-Scan derselben Vorlage
+  (`--nomax300` behält die Auflösung des Scans); bei Scans unter 250 DPI wird
+  die Textmaske auf rund 300 DPI verfeinert — glatte statt treppige Schrift.
+  Beides ist pattern-safe: Kein Zeichen wird mit einem anderen verglichen
+- **JPEG-Scans**: Fotos und Screenshots auf Textseiten werden verlustfrei aus
+  dem JPEG des Scans übernommen, wenn das nicht größer ist; auf Wunsch
+  entblockt (`--deblock`) und entrastert (`--descreen`) das Programm Fotos für
+  noch kleinere Dateien
 - **Formulare und Screenshots**: grau hinterlegte Formularfelder bleiben erhalten (gerade
   Felder als Vektorfläche mit scharfer Kante), Formulare mit farbigen Rahmen bleiben kleine
   Textseiten, helle Ankreuzkästchen bleiben vollständig; Screenshots und Programmfenster auf
@@ -139,7 +148,7 @@ MrcCompressor.exe --help
 | `--ocr` | unsichtbare Textebene (durchsuchbare PDF) per Texterkennung |
 | `--profile "Name"` / `--profiles` | eigenes Profil aufrufen / alle Profile auflisten |
 | `--threshold 0-255` | Empfindlichkeit der Texterkennung |
-| `--scale 1-10` | Verkleinerungsfaktor des Hintergrunds (stärkster Größenhebel) |
+| `--scale 1-10` | Verkleinerungsfaktor des Hintergrunds, bezogen auf 300 DPI (stärkster Größenhebel) |
 | `--quality 0-100` | Qualität des Hintergrunds (JPEG 2000 / JPEG) |
 | `--patternsafe` | Pattern-Safe erzwingen (ist der Standard; gilt auch gegen ein Profil): generisches JBIG2 ohne Symbol Coding |
 | `--ccitt` | Pattern-Safe ohne JBIG2: Textmaske als CCITT G4 (größer) |
@@ -147,6 +156,10 @@ MrcCompressor.exe --help
 | `--nojbig2symbols` | zusammen mit `--maxcompress`: ohne Zeichenersetzung (Zeichenmuster bitgleich) |
 | `--noimageregions` | Fotos auf Textseiten nicht als eigenes Bild schützen |
 | `--noimagetext` | Bildseiten ohne scharfe Textmaske (vollständig als Bild) |
+| `--nomax300` | Scans über 300 DPI nicht auf 300 DPI rechnen (Auflösung des Scans behalten; größer) |
+| `--noupscale` | Textmasken von Scans unter 250 DPI nicht auf 300 DPI verfeinern (kleiner, Schrift treppiger; bei `--maxcompress` von selbst aus) |
+| `--deblock` | JPEG-Scans entblocken: Fotos und Bildseiten kleiner und glatter (bei `--maxcompress` von selbst an) |
+| `--descreen` | Fotos entrastern (Druckraster von Zeitschriften): kleiner und etwas weicher (bei `--maxcompress` von selbst an) |
 | `--dpi N` | Auflösung für Bilder ohne DPI-Angabe erzwingen |
 
 Jeder Modus startet mit seinem Profil aus `mrc_profiles.xml`; angegebene

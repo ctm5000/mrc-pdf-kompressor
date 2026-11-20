@@ -51,6 +51,14 @@ and it is free for private individuals and small businesses.
 - **Text on image pages**: even on pages stored as an image (photos, plans,
   brochures), reliably detected black text goes into a sharp text mask — line by
   line and paragraph by paragraph; the image underneath gets smaller
+- **Every scan resolution**: scans above 300 DPI are resampled to 300 DPI before
+  processing and get as small as a 300-DPI scan of the same original
+  (`--nomax300` keeps the resolution of the scan); for scans below 250 DPI the
+  text mask is refined to about 300 DPI — smooth instead of jagged text. Both
+  are pattern-safe: no character is compared with another
+- **JPEG scans**: photos and screenshots on text pages are taken losslessly from
+  the JPEG of the scan if that is not larger; on request the program deblocks
+  (`--deblock`) and descreens (`--descreen`) photos for even smaller files
 - **Forms and screenshots**: grey-shaded form fields are kept (straight fields as
   vector shapes with crisp edges), forms with coloured frames stay small text pages,
   light checkboxes stay complete; screenshots and application windows on text pages
@@ -140,7 +148,7 @@ MrcCompressor.exe --help
 | `--ocr` | invisible text layer (searchable PDF) via text recognition |
 | `--profile "Name"` / `--profiles` | run a custom profile / list all profiles |
 | `--threshold 0-255` | text detection sensitivity |
-| `--scale 1-10` | background downscale factor (strongest size lever) |
+| `--scale 1-10` | background downscale factor, relative to 300 DPI (strongest size lever) |
 | `--quality 0-100` | background JPEG 2000 / JPEG quality |
 | `--patternsafe` | enforce pattern-safe coding (the default; also overrides a profile): generic JBIG2 without symbol coding |
 | `--ccitt` | pattern-safe without JBIG2: text mask as CCITT G4 (larger) |
@@ -148,6 +156,10 @@ MrcCompressor.exe --help
 | `--nojbig2symbols` | together with `--maxcompress`: no glyph replacement (bit-identical character patterns) |
 | `--noimageregions` | do not protect photos on text pages as a separate image |
 | `--noimagetext` | image pages without a sharp text mask (stored entirely as an image) |
+| `--nomax300` | do not resample scans above 300 DPI to 300 DPI (keep the resolution of the scan; larger) |
+| `--noupscale` | do not refine text masks of scans below 250 DPI to 300 DPI (smaller, text more jagged; off automatically with `--maxcompress`) |
+| `--deblock` | deblock JPEG scans: photos and image pages smaller and smoother (on automatically with `--maxcompress`) |
+| `--descreen` | descreen photos (print screen of magazines): smaller and slightly softer (on automatically with `--maxcompress`) |
 | `--dpi N` | force resolution for images without DPI metadata |
 
 Every mode starts with its profile from `mrc_profiles.xml`; explicit parameters
